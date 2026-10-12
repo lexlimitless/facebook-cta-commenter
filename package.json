@@ -1,0 +1,10 @@
+{
+  "name": "facebook-cta-commenter",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "dry-run": "MODE=dry-run node src/run.js"
+  }
+}

@@ -1,0 +1,58 @@
+name: Comment
+
+# Posts each video's CTA comment (facebook-pinned-comments.txt) as the
+# Page about an hour after the video goes live, then opens an issue reminding
+# you to pin it. Logic and safety notes: src/run.js.
+#
+# Nothing is posted unless config.json has "live": true. Until
+# then, and on every PR and manual "dry-run", it only writes a report to the
+# run's summary page.
+#
+# Secrets: FB_PAGE_TOKEN (non-expiring Page token), FB_PAGE_ID.
+
+on:
+  schedule:
+    # Videos go live Tuesdays 9:47 AM Jamaica (14:47 UTC). Checking every 10
+    # minutes 9:00 AM-12:59 PM Jamaica on Tuesdays keeps a private repo well
+    # inside the free Actions minutes; the daily run catches anything
+    # published on another day.
+    - cron: '*/10 14-17 * * 2'
+    - cron: '30 18 * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'dry-run reports only. auto follows config.json.'
+        type: choice
+        options: [dry-run, auto]
+        default: dry-run
+  pull_request:
+
+# One run at a time, never cancelled midway, so two runs can't both decide a
+# comment is missing and post it twice.
+concurrency:
+  group: facebook-cta
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  comment:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+
+      # No npm install: the script uses only Node built-ins.
+      - name: Run commenter
+        run: node src/run.js
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODE: ${{ github.event_name == 'pull_request' && 'dry-run' || inputs.mode || 'auto' }}
