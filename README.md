@@ -1,6 +1,6 @@
 # Facebook CTA commenter
 
-About an hour after each video goes live on the Paul Stennett Facebook Page, this posts that video's call-to-action comment as the Page. It then opens a GitHub issue reminding you to pin it, because Meta's API can't pin comments.
+About two hours after each video goes live on the Paul Stennett Facebook Page, this posts that video's call-to-action comment as the Page. It then opens a GitHub issue reminding you to pin it, because Meta's API can't pin comments.
 
 ## Editing the comments
 
@@ -23,7 +23,7 @@ Everything under this line is posted word for word.
 - **Every 10 minutes on Tuesdays**, 9:00 AM to 1:00 PM Jamaica time.
 - **Once a day** as a backup, for anything published on another day.
 
-It comments once 60 minutes have passed since publish. If a video has been live for more than 3 days without its comment, it opens an issue instead of posting late.
+It comments once 2 hours have passed since publish. If a video has been live for more than 3 days without its comment, it opens an issue instead of posting late.
 
 ## Safety
 

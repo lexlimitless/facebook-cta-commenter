@@ -89,7 +89,7 @@ describe('decide', () => {
   const base = { entries, postText: 'Your Podcast Isn’t Making Money? This Could Be Why', publishedMs: published, pageId: PAGE, comments: [] }
   const ours = { from: { id: PAGE }, message: 'Have any clients told you?\nSee how it works: https://pepper.ly/e454c77' }
 
-  it('waits until an hour after publishing', () => {
+  it('waits until two hours after publishing', () => {
     assert.equal(decide({ ...base, nowMs: published + COMMENT_DELAY_MS - 1 }).action, 'wait')
     assert.equal(decide({ ...base, nowMs: published + COMMENT_DELAY_MS }).action, 'post')
   })

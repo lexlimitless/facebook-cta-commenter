@@ -1,7 +1,7 @@
 name: Comment
 
 # Posts each video's CTA comment (facebook-pinned-comments.txt) as the
-# Page about an hour after the video goes live, then opens an issue reminding
+# Page about two hours after the video goes live, then opens an issue reminding
 # you to pin it. Logic and safety notes: src/run.js.
 #
 # Nothing is posted unless config.json has "live": true. Until

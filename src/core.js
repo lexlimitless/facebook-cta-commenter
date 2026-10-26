@@ -2,7 +2,7 @@
 // matching Facebook posts to entries, and deciding when a comment is due.
 // No network access here, so all of it is unit-tested (test/core.test.js).
 
-export const COMMENT_DELAY_MS = 60 * 60 * 1000
+export const COMMENT_DELAY_MS = 2 * 60 * 60 * 1000
 // A post found later than this after going live is reported, not commented
 // on: a CTA appearing days late looks odd and usually means something broke.
 export const MAX_LATE_MS = 3 * 24 * 60 * 60 * 1000

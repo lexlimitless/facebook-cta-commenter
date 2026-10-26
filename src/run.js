@@ -2,8 +2,8 @@
 // Facebook CTA commenter. Run by .github/workflows/comment.yml.
 //
 // Reads facebook-pinned-comments.txt, finds the Page's scheduled and
-// recently published videos, matches each to its entry by title, and about an
-// hour after a video goes live posts that entry's comment as the Page. It then
+// recently published videos, matches each to its entry by title, and about two
+// hours after a video goes live posts that entry's comment as the Page. It then
 // opens a GitHub issue reminding Paul to pin it (Meta's API can't pin).
 //
 // Safe to run as often as you like: before posting it checks the post for a
@@ -19,7 +19,7 @@ import { readFileSync, appendFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 import {
-  parseCommentsFile, findEntry, decide, formatTime, localDate, MAX_LATE_MS,
+  parseCommentsFile, findEntry, decide, formatTime, localDate, COMMENT_DELAY_MS, MAX_LATE_MS,
 } from './core.js'
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
@@ -242,7 +242,7 @@ async function main() {
     if (entry) matchedVideos.add(entry.video)
     rows.push(['Scheduled', formatTime(s.publishMs), entry?.title || s.text.split('\n')[0],
       entry ? `VIDEO ${entry.video}` : '—',
-      entry ? `Comment due about ${formatTime(s.publishMs + 3600000)}` : 'No matching title in the comments file'])
+      entry ? `Comment due about ${formatTime(s.publishMs + COMMENT_DELAY_MS)}` : 'No matching title in the comments file'])
     if (entry && localDate(s.publishMs) !== entry.date) {
       lines.push(`VIDEO ${entry.video} is scheduled for ${localDate(s.publishMs)} but the file says ${entry.date}. It's matched by title, so the comment still goes on the right post.`)
     }
